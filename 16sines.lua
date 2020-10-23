@@ -96,22 +96,22 @@ function set_amp_from_cc(amp, value)
 end
 
 function map_cc_to_slider(cc_num)
-  if cc_num == 32 then cc_num = 1
-  elseif cc_num == 33 then cc_num = 2
-  elseif cc_num == 34 then cc_num = 3
-  elseif cc_num == 35 then cc_num = 4
-  elseif cc_num == 36 then cc_num = 5
-  elseif cc_num == 37 then cc_num = 6
-  elseif cc_num == 38 then cc_num = 7
-  elseif cc_num == 39 then cc_num = 8
-  elseif cc_num == 40 then cc_num = 9
-  elseif cc_num == 41 then cc_num = 10
-  elseif cc_num == 42 then cc_num = 11
-  elseif cc_num == 43 then cc_num = 12
-  elseif cc_num == 44 then cc_num = 13
-  elseif cc_num == 45 then cc_num = 14
-  elseif cc_num == 46 then cc_num = 15
-  elseif cc_num == 47 then cc_num = 16
+  if cc_num == 32 then cc_num = 0
+  elseif cc_num == 33 then cc_num = 1
+  elseif cc_num == 34 then cc_num = 2
+  elseif cc_num == 35 then cc_num = 3
+  elseif cc_num == 36 then cc_num = 4
+  elseif cc_num == 37 then cc_num = 5
+  elseif cc_num == 38 then cc_num = 6
+  elseif cc_num == 39 then cc_num = 7
+  elseif cc_num == 40 then cc_num = 8
+  elseif cc_num == 41 then cc_num = 9
+  elseif cc_num == 42 then cc_num = 10
+  elseif cc_num == 43 then cc_num = 11
+  elseif cc_num == 44 then cc_num = 12
+  elseif cc_num == 45 then cc_num = 13
+  elseif cc_num == 46 then cc_num = 14
+  elseif cc_num == 47 then cc_num = 15
   end
   return cc_num
 end
@@ -124,14 +124,13 @@ m.event = function(data)
   if d.type == "cc" then
     --clamp the cc value to acceptable range for engine sinOsc
     cc_val = util.clamp((d.val/127), 0.0, 1.0)
-    --clamp to a slightly different range to control GUI sliders
+    print ("cc val is " .. cc_val)
     set_amp_from_cc(d.cc, cc_val)
-    --what is accum?
-    cc_accum = (cc_accum + cc_val) % 16
-    edit = cc_accum
     --edit is the current slider
-    edit = map_cc_to_slider(d.cc) - 1
-    sliders[edit+1] = sliders[edit+1] + cc_val
+    edit = map_cc_to_slider(d.cc)
+    print (edit)
+    --clamp cc_val value to set GUI slider
+    sliders[edit+1] = util.clamp(d.val, 0.0, 32.0)
     if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
     if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
   end
@@ -143,14 +142,16 @@ function enc(n, delta)
     --do something
     mix:delta("output", delta)
   elseif n == 2 then
+    --accum wraps around 0-15
     accum = (accum + delta) % 16
     --edit is the slider number
     edit = accum
   elseif n == 3 then
     sliders[edit+1] = sliders[edit+1] + delta
     --print (delta)
-    amp_value = util.clamp(((sliders[edit+1] + delta) * .01), 0.0, 1.0)
-    set_amp(edit, amp_value)
+    amp_value = util.clamp(((sliders[edit+1] + delta) * .026), 0.0, 1.0)
+    print ("amp_val is " .. amp_value)
+    set_amp(edit+1, amp_value)
     if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
     if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
   end
