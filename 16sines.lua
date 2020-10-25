@@ -11,9 +11,14 @@ local edit = 1
 local accum = 1
 local cc_accum = 1
 local step = 0
-local master_freq = 220
+local scale_names = {}
+local notes = {}
+
+
 
 engine.name = '16Sines'
+
+MusicUtil = require "musicutil"
 
 function init()
   print("loaded 16Sines engine")
@@ -33,6 +38,34 @@ function init()
   engine.amp14(0)
   engine.amp15(0)
   engine.amp16(0)
+
+  add_params()
+end
+
+function add_params()
+  for i = 1, #MusicUtil.SCALES do
+    table.insert(scale_names, string.lower(MusicUtil.SCALES[i].name))
+  end
+  
+  params:add{type = "option", id = "scale_mode", name = "scale mode",
+    options = scale_names, default = 5,
+    action = function() build_scale() end}
+  params:add{type = "number", id = "root_note", name = "root note",
+    min = 0, max = 127, default = 60, formatter = function(param) return MusicUtil.note_num_to_name(param:get(), true) end,
+    action = function() build_scale() end}
+  params:default()
+end
+
+function build_scale()
+  notes = MusicUtil.generate_scale_of_length(params:get("root_note"), params:get("scale_mode"), 16)
+  local num_to_add = 16 - #notes
+  for i = 1, num_to_add do
+    table.insert(notes, notes[16 - num_to_add])
+  end
+  --set notes
+  for i = 1,16 do
+    set_freq(i, MusicUtil.note_num_to_freq(notes[i]))
+  end  
 end
 
 function set_freq(freq, value)
@@ -51,7 +84,7 @@ function set_freq(freq, value)
   elseif freq == 13 then engine.freq13(value)
   elseif freq == 14 then engine.freq14(value)
   elseif freq == 15 then engine.freq15(value)
-  elseif freq == 16 then engine.freq16(value) 
+  elseif freq == 16 then engine.freq16(value)
   end
 end
 
@@ -124,11 +157,9 @@ m.event = function(data)
   if d.type == "cc" then
     --clamp the cc value to acceptable range for engine sinOsc
     cc_val = util.clamp((d.val/127), 0.0, 1.0)
-    print ("cc val is " .. cc_val)
     set_amp_from_cc(d.cc, cc_val)
     --edit is the current slider
     edit = map_cc_to_slider(d.cc)
-    print (edit)
     --clamp cc_val value to set GUI slider
     sliders[edit+1] = util.clamp(d.val, 0.0, 32.0)
     if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
@@ -148,9 +179,7 @@ function enc(n, delta)
     edit = accum
   elseif n == 3 then
     sliders[edit+1] = sliders[edit+1] + delta
-    --print (delta)
     amp_value = util.clamp(((sliders[edit+1] + delta) * .026), 0.0, 1.0)
-    print ("amp_val is " .. amp_value)
     set_amp(edit+1, amp_value)
     if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
     if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
