@@ -38,7 +38,8 @@ Engine_16Sines : CroneEngine {
 		    );
 
 		    car = SinOsc.ar(
-		        (freq * carPartial) + mod,
+			//think the array here gives stereo in output?
+		        [(freq * carPartial) + mod,(freq * carPartial) + mod)],
 		        0,
 		        mul
 		    );
