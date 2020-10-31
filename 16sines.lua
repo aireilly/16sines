@@ -216,7 +216,7 @@ function enc(n, delta)
     end
   elseif n == 3 then
     if key_3_pressed == 0 and key_2_pressed == 0 then
-      --set the slider value in the GUI
+      --set the slider value in the gui
       sliders[edit+1] = sliders[edit+1] + delta
       amp_value = util.clamp(((sliders[edit+1] + delta) * .026), 0.0, 1.0)
       set_amp(edit+1, amp_value)
@@ -225,12 +225,21 @@ function enc(n, delta)
     elseif key_3_pressed == 1 and key_2_pressed == 0 then
       -- set the freq_slider value
       freq_sliders[edit+1] = freq_sliders[edit+1] + delta
-      if freq_sliders[edit+1] > 4 then freq_sliders[edit+1] = 4 end
-      if freq_sliders[edit+1] < -4 then freq_sliders[edit+1] = -4 end
-      --set octave
+      if freq_sliders[edit+1] > 2 then freq_sliders[edit+1] = 2 end
+      if freq_sliders[edit+1] < -2 then freq_sliders[edit+1] = -2 end
+      --set octave for slider
+      if freq_sliders[edit+1] == -2 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/4)
+      elseif freq_sliders[edit+1] == -1 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/2)
+      elseif freq_sliders[edit+1] == 0 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/1)
+      elseif freq_sliders[edit+1] == 1 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/2)
+      elseif freq_sliders[edit+1] == 2 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])*4)
+      end
       print ("delta " .. delta .. "  while key3 held freq value is " .. freq_sliders[edit+1] .. ". slider being edited is " .. edit)
-      --octave mojo from musicUtil
-      set_freq(edit, freq_sliders[edit+1])
     end
   end
   redraw()
