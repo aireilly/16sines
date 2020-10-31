@@ -7,17 +7,19 @@
 -- key 3 = mutate
 
 local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+local freq_sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+local index_sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local edit = 1
 local accum = 1
+local cc_index = 3
 local cc_accum = 1
 local step = 0
 local scale_names = {}
 local notes = {}
+local key_2_pressed = 0
+local key_3_pressed = 0
 
-
-
-engine.name = '16Sines'
-
+engine.name = "16Sines"
 MusicUtil = require "musicutil"
 
 function init()
@@ -68,63 +70,84 @@ function build_scale()
   end  
 end
 
-function set_freq(freq, value)
-  if freq == 1 then engine.fm_sine_synth1_freq(value)
-  elseif freq == 2 then engine.fm_sine_synth2_freq(value)
-  elseif freq == 3 then engine.fm_sine_synth3_freq(value)
-  elseif freq == 4 then engine.fm_sine_synth4_freq(value)
-  elseif freq == 5 then engine.fm_sine_synth5_freq(value)
-  elseif freq == 6 then engine.fm_sine_synth6_freq(value)
-  elseif freq == 7 then engine.fm_sine_synth7_freq(value)
-  elseif freq == 8 then engine.fm_sine_synth8_freq(value)
-  elseif freq == 9 then engine.fm_sine_synth9_freq(value)
-  elseif freq == 10 then engine.fm_sine_synth10_freq(value)
-  elseif freq == 11 then engine.fm_sine_synth11_freq(value)
-  elseif freq == 12 then engine.fm_sine_synth12_freq(value)
-  elseif freq == 13 then engine.fm_sine_synth13_freq(value)
-  elseif freq == 14 then engine.fm_sine_synth14_freq(value)
-  elseif freq == 15 then engine.fm_sine_synth15_freq(value)
-  elseif freq == 16 then engine.fm_sine_synth16_freq(value)
+function set_fm_index(synth_num, value)
+    --set index between 0-24 for pleasant sounds
+  if synth_num == 1 then engine.fm_sine_synth1_index(value)
+  elseif synth_num == 2 then engine.fm_sine_synth2_index(value)
+  elseif synth_num == 3 then engine.fm_sine_synth3_index(value)
+  elseif synth_num == 4 then engine.fm_sine_synth4_index(value)
+  elseif synth_num == 5 then engine.fm_sine_synth5_index(value)
+  elseif synth_num == 6 then engine.fm_sine_synth6_index(value)
+  elseif synth_num == 7 then engine.fm_sine_synth7_index(value)
+  elseif synth_num == 8 then engine.fm_sine_synth8_index(value)
+  elseif synth_num == 9 then engine.fm_sine_synth9_index(value)
+  elseif synth_num == 10 then engine.fm_sine_synth10_index(value)
+  elseif synth_num == 11 then engine.fm_sine_synth11_index(value)
+  elseif synth_num == 12 then engine.fm_sine_synth12_index(value)
+  elseif synth_num == 13 then engine.fm_sine_synth13_index(value)
+  elseif synth_num == 14 then engine.fm_sine_synth14_index(value)
+  elseif synth_num == 15 then engine.fm_sine_synth15_index(value)
+  elseif synth_num == 16 then engine.fm_sine_synth16_index(value)
   end
 end
 
-function set_amp(amp, value)
-  if amp == 1 then engine.fm_sine_synth1_amp(value)
-  elseif amp == 2 then engine.fm_sine_synth2_amp(value)
-  elseif amp == 3 then engine.fm_sine_synth3_amp(value)
-  elseif amp == 4 then engine.fm_sine_synth4_amp(value)
-  elseif amp == 5 then engine.fm_sine_synth5_amp(value)
-  elseif amp == 6 then engine.fm_sine_synth6_amp(value)
-  elseif amp == 7 then engine.fm_sine_synth7_amp(value)
-  elseif amp == 8 then engine.fm_sine_synth8_amp(value)
-  elseif amp == 9 then engine.fm_sine_synth9_amp(value)
-  elseif amp == 10 then engine.fm_sine_synth10_amp(value)
-  elseif amp == 11 then engine.fm_sine_synth11_amp(value)
-  elseif amp == 12 then engine.fm_sine_synth12_amp(value)
-  elseif amp == 13 then engine.fm_sine_synth13_amp(value)
-  elseif amp == 14 then engine.fm_sine_synth14_amp(value)
-  elseif amp == 15 then engine.fm_sine_synth15_amp(value)
-  elseif amp == 16 then engine.fm_sine_synth16_amp(value)
+function set_freq(synth_num, value)
+  if synth_num == 1 then engine.fm_sine_synth1_freq(value)
+  elseif synth_num == 2 then engine.fm_sine_synth2_freq(value)
+  elseif synth_num == 3 then engine.fm_sine_synth3_freq(value)
+  elseif synth_num == 4 then engine.fm_sine_synth4_freq(value)
+  elseif synth_num == 5 then engine.fm_sine_synth5_freq(value)
+  elseif synth_num == 6 then engine.fm_sine_synth6_freq(value)
+  elseif synth_num == 7 then engine.fm_sine_synth7_freq(value)
+  elseif synth_num == 8 then engine.fm_sine_synth8_freq(value)
+  elseif synth_num == 9 then engine.fm_sine_synth9_freq(value)
+  elseif synth_num == 10 then engine.fm_sine_synth10_freq(value)
+  elseif synth_num == 11 then engine.fm_sine_synth11_freq(value)
+  elseif synth_num == 12 then engine.fm_sine_synth12_freq(value)
+  elseif synth_num == 13 then engine.fm_sine_synth13_freq(value)
+  elseif synth_num == 14 then engine.fm_sine_synth14_freq(value)
+  elseif synth_num == 15 then engine.fm_sine_synth15_freq(value)
+  elseif synth_num == 16 then engine.fm_sine_synth16_freq(value)
   end
 end
 
-function set_amp_from_cc(amp, value)
-  if amp == 32 then engine.fm_sine_synth1_amp(value)
-  elseif amp == 33 then engine.fm_sine_synth2_amp(value)
-  elseif amp == 34 then engine.fm_sine_synth3_amp(value)
-  elseif amp == 35 then engine.fm_sine_synth4_amp(value)
-  elseif amp == 36 then engine.fm_sine_synth5_amp(value)
-  elseif amp == 37 then engine.fm_sine_synth6_amp(value)
-  elseif amp == 38 then engine.fm_sine_synth7_amp(value)
-  elseif amp == 39 then engine.fm_sine_synth8_amp(value)
-  elseif amp == 40 then engine.fm_sine_synth9_amp(value)
-  elseif amp == 41 then engine.fm_sine_synth10_amp(value)
-  elseif amp == 42 then engine.fm_sine_synth11_amp(value)
-  elseif amp == 43 then engine.fm_sine_synth12_amp(value)
-  elseif amp == 44 then engine.fm_sine_synth13_amp(value)
-  elseif amp == 45 then engine.fm_sine_synth14_amp(value)
-  elseif amp == 46 then engine.fm_sine_synth15_amp(value)
-  elseif amp == 47 then engine.fm_sine_synth16_amp(value)
+function set_amp(synth_num, value)
+  if synth_num == 1 then engine.fm_sine_synth1_amp(value)
+  elseif synth_num == 2 then engine.fm_sine_synth2_amp(value)
+  elseif synth_num == 3 then engine.fm_sine_synth3_amp(value)
+  elseif synth_num == 4 then engine.fm_sine_synth4_amp(value)
+  elseif synth_num == 5 then engine.fm_sine_synth5_amp(value)
+  elseif synth_num == 6 then engine.fm_sine_synth6_amp(value)
+  elseif synth_num == 7 then engine.fm_sine_synth7_amp(value)
+  elseif synth_num == 8 then engine.fm_sine_synth8_amp(value)
+  elseif synth_num == 9 then engine.fm_sine_synth9_amp(value)
+  elseif synth_num == 10 then engine.fm_sine_synth10_amp(value)
+  elseif synth_num == 11 then engine.fm_sine_synth11_amp(value)
+  elseif synth_num == 12 then engine.fm_sine_synth12_amp(value)
+  elseif synth_num == 13 then engine.fm_sine_synth13_amp(value)
+  elseif synth_num == 14 then engine.fm_sine_synth14_amp(value)
+  elseif synth_num == 15 then engine.fm_sine_synth15_amp(value)
+  elseif synth_num == 16 then engine.fm_sine_synth16_amp(value)
+  end
+end
+
+function set_amp_from_cc(cc_num, value)
+  if cc_num == 32 then engine.fm_sine_synth1_amp(value)
+  elseif cc_num == 33 then engine.fm_sine_synth2_amp(value)
+  elseif cc_num == 34 then engine.fm_sine_synth3_amp(value)
+  elseif cc_num == 35 then engine.fm_sine_synth4_amp(value)
+  elseif cc_num == 36 then engine.fm_sine_synth5_amp(value)
+  elseif cc_num == 37 then engine.fm_sine_synth6_amp(value)
+  elseif cc_num == 38 then engine.fm_sine_synth7_amp(value)
+  elseif cc_num == 39 then engine.fm_sine_synth8_amp(value)
+  elseif cc_num == 40 then engine.fm_sine_synth9_amp(value)
+  elseif cc_num == 41 then engine.fm_sine_synth10_amp(value)
+  elseif cc_num == 42 then engine.fm_sine_synth11_amp(value)
+  elseif cc_num == 43 then engine.fm_sine_synth12_amp(value)
+  elseif cc_num == 44 then engine.fm_sine_synth13_amp(value)
+  elseif cc_num == 45 then engine.fm_sine_synth14_amp(value)
+  elseif cc_num == 46 then engine.fm_sine_synth15_amp(value)
+  elseif cc_num == 47 then engine.fm_sine_synth16_amp(value)
   end
 end
 
@@ -149,8 +172,6 @@ function map_cc_to_slider(cc_num)
   return cc_num
 end
 
-
-
 m = midi.connect()
 m.event = function(data)
   local d = midi.to_msg(data)
@@ -168,38 +189,67 @@ m.event = function(data)
   redraw()
 end
 
+function keys_down()
+  if key_2_pressed == 1 and key_3_pressed == 1 then
+    print ("key 2 and 3 were pressed together...")
+    --use this to read freq from norns input
+  end
+end
+
+
 function enc(n, delta)
   if n == 1 then
-    --do something
     mix:delta("output", delta)
   elseif n == 2 then
-    --accum wraps around 0-15
-    accum = (accum + delta) % 16
-    --edit is the slider number
-    edit = accum
+    if key_2_pressed == 0 and key_3_pressed == 0 then 
+      --accum wraps around 0-15
+      accum = (accum + delta) % 16
+      --edit is the slider number
+      edit = accum
+    elseif key_2_pressed == 1 and key_3_pressed == 0 then
+      -- set the index_slider value
+      index_sliders[edit+1] = index_sliders[edit+1] + delta
+      if index_sliders[edit+1] > 500 then index_sliders[edit+1] = 500 end
+      if index_sliders[edit+1] < 0 then index_sliders[edit+1] = 0 end
+      print ("delta for index is " .. index_sliders[edit+1] .. " while key2 held" .. edit+1)
+      set_fm_index(edit+1, index_sliders[edit+1])
+    end
   elseif n == 3 then
-    sliders[edit+1] = sliders[edit+1] + delta
-    amp_value = util.clamp(((sliders[edit+1] + delta) * .026), 0.0, 1.0)
-    set_amp(edit+1, amp_value)
-    if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
-    if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
+    if key_3_pressed == 0 and key_2_pressed == 0 then
+      --set the slider value in the GUI
+      sliders[edit+1] = sliders[edit+1] + delta
+      amp_value = util.clamp(((sliders[edit+1] + delta) * .026), 0.0, 1.0)
+      set_amp(edit+1, amp_value)
+      if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
+      if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
+    elseif key_3_pressed == 1 and key_2_pressed == 0 then
+      -- set the freq_slider value
+      freq_sliders[edit+1] = freq_sliders[edit+1] + delta
+      if freq_sliders[edit+1] > 4 then freq_sliders[edit+1] = 4 end
+      if freq_sliders[edit+1] < -4 then freq_sliders[edit+1] = -4 end
+      --set octave
+      print ("delta " .. delta .. "  while key3 held freq value is " .. freq_sliders[edit+1] .. ". slider being edited is " .. edit)
+      --octave mojo from musicUtil
+      set_freq(edit, freq_sliders[edit+1])
+    end
   end
   redraw()
+  keys_down()
 end
 
 function key(n, z)
+  --use these keypress variables to add extra functionality on key hold
   if n == 2 and z == 1 then
-    sliders[1] = math.floor(math.random()*4)
-    for i=2, 16 do
-      sliders[i] = sliders[i-1]+math.floor(math.random()*9)-3
-    end
-    redraw()
+    key_2_pressed = 1
+  elseif n == 2 and z == 0 then
+    key_2_pressed = 0
   elseif n == 3 and z == 1 then
-    for i=1, 16 do
-      sliders[i] = sliders[i]+math.floor(math.random()*5)-2
-    end
-    redraw()
+    key_3_pressed = 1
+  elseif n == 3 and z == 0 then
+    key_3_pressed = 0
   end
+  redraw()
+  keys_down()
 end
 
 function redraw()

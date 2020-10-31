@@ -36,13 +36,17 @@ Engine_16Sines : CroneEngine {
 		        0,
 		        freq * index * LFNoise1.kr(5.reciprocal).abs
 		    );
-
-		    car = SinOsc.ar(
-			//think the array here gives stereo in output?
-		        [(freq * carPartial) + mod,(freq * carPartial) + mod)],
+		    //stereo carrier
+		    car = [SinOsc.ar(
+		        freq * carPartial + mod,
 		        0,
 		        mul
-		    );
+		    ),
+		    SinOsc.ar(
+		        freq * carPartial + mod,
+		        0,
+		        mul
+		    )];
 
 		    Out.ar(
 		        bus,
@@ -68,6 +72,72 @@ Engine_16Sines : CroneEngine {
 		fm_sine_synth14 = Synth.new(\fm1, target: context.og);
 		fm_sine_synth15 = Synth.new(\fm1, target: context.og);
 		fm_sine_synth16 = Synth.new(\fm1, target: context.og);
+
+		this.addCommand(\fm_sine_synth1_index, "f", {
+			arg msg;
+			fm_sine_synth1.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth2_index, "f", {
+			arg msg;
+			fm_sine_synth2.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth3_index, "f", {
+			arg msg;
+			fm_sine_synth3.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth4_index, "f", {
+			arg msg;
+			fm_sine_synth4.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth5_index, "f", {
+			arg msg;
+			fm_sine_synth5.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth6_index, "f", {
+			arg msg;
+			fm_sine_synth6.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth7_index, "f", {
+			arg msg;
+			fm_sine_synth7.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth8_index, "f", {
+			arg msg;
+			fm_sine_synth8.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth9_index, "f", {
+			arg msg;
+			fm_sine_synth9.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth10_index, "f", {
+			arg msg;
+			fm_sine_synth10.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth11_index, "f", {
+			arg msg;
+			fm_sine_synth11.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth12_index, "f", {
+			arg msg;
+			fm_sine_synth12.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth13_index, "f", {
+			arg msg;
+			fm_sine_synth13.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth14_index, "f", {
+			arg msg;
+			fm_sine_synth14.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth15_index, "f", {
+			arg msg;
+			fm_sine_synth15.set(\index, msg[1]);
+		});
+		this.addCommand(\fm_sine_synth16_index, "f", {
+			arg msg;
+			fm_sine_synth16.set(\index, msg[1]);
+		});
+
 
 		this.addCommand(\fm_sine_synth1_amp, "f", {
 			arg msg;
