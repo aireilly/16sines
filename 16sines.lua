@@ -9,6 +9,8 @@
 local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local freq_sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local index_sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+local current_freq = 0
+local current_index = 0
 local edit = 1
 local accum = 1
 local cc_index = 3
@@ -71,43 +73,105 @@ function build_scale()
 end
 
 function set_fm_index(synth_num, value)
-    --set index between 0-24 for pleasant sounds
-  if synth_num == 1 then engine.fm_sine_synth1_index(value)
-  elseif synth_num == 2 then engine.fm_sine_synth2_index(value)
-  elseif synth_num == 3 then engine.fm_sine_synth3_index(value)
-  elseif synth_num == 4 then engine.fm_sine_synth4_index(value)
-  elseif synth_num == 5 then engine.fm_sine_synth5_index(value)
-  elseif synth_num == 6 then engine.fm_sine_synth6_index(value)
-  elseif synth_num == 7 then engine.fm_sine_synth7_index(value)
-  elseif synth_num == 8 then engine.fm_sine_synth8_index(value)
-  elseif synth_num == 9 then engine.fm_sine_synth9_index(value)
-  elseif synth_num == 10 then engine.fm_sine_synth10_index(value)
-  elseif synth_num == 11 then engine.fm_sine_synth11_index(value)
-  elseif synth_num == 12 then engine.fm_sine_synth12_index(value)
-  elseif synth_num == 13 then engine.fm_sine_synth13_index(value)
-  elseif synth_num == 14 then engine.fm_sine_synth14_index(value)
-  elseif synth_num == 15 then engine.fm_sine_synth15_index(value)
-  elseif synth_num == 16 then engine.fm_sine_synth16_index(value)
+    --set index between 0-24 for pleasant sounds, and update the current_index
+  if synth_num == 1 then 
+    engine.fm_sine_synth1_index(value)
+    current_index = value
+  elseif synth_num == 2 then
+    engine.fm_sine_synth2_index(value)
+    current_index = value
+  elseif synth_num == 3 then 
+    engine.fm_sine_synth3_index(value)
+    current_index = value
+  elseif synth_num == 4 then 
+    engine.fm_sine_synth4_index(value)
+    current_index = value
+  elseif synth_num == 5 then 
+    engine.fm_sine_synth5_index(value)
+    current_index = value
+  elseif synth_num == 6 then 
+    engine.fm_sine_synth6_index(value)
+    current_index = value
+  elseif synth_num == 7 then 
+    engine.fm_sine_synth7_index(value)
+    current_index = value
+  elseif synth_num == 8 then 
+    engine.fm_sine_synth8_index(value)
+    current_index = value
+  elseif synth_num == 9 then 
+    engine.fm_sine_synth9_index(value)
+    current_index = value
+  elseif synth_num == 10 then 
+    engine.fm_sine_synth10_index(value)
+    current_index = value
+  elseif synth_num == 11 then 
+    engine.fm_sine_synth11_index(value)
+    current_index = value
+  elseif synth_num == 12 then 
+    engine.fm_sine_synth12_index(value)
+    current_index = value
+  elseif synth_num == 13 then 
+    engine.fm_sine_synth13_index(value)
+    current_index = value
+  elseif synth_num == 14 then 
+    engine.fm_sine_synth14_index(value)
+    current_index = value
+  elseif synth_num == 15 then 
+    engine.fm_sine_synth15_index(value)
+    current_index = value
+  elseif synth_num == 16 then 
+    engine.fm_sine_synth16_index(value)
+    current_index = value
   end
 end
 
 function set_freq(synth_num, value)
   if synth_num == 1 then engine.fm_sine_synth1_freq(value)
-  elseif synth_num == 2 then engine.fm_sine_synth2_freq(value)
-  elseif synth_num == 3 then engine.fm_sine_synth3_freq(value)
-  elseif synth_num == 4 then engine.fm_sine_synth4_freq(value)
-  elseif synth_num == 5 then engine.fm_sine_synth5_freq(value)
-  elseif synth_num == 6 then engine.fm_sine_synth6_freq(value)
-  elseif synth_num == 7 then engine.fm_sine_synth7_freq(value)
-  elseif synth_num == 8 then engine.fm_sine_synth8_freq(value)
-  elseif synth_num == 9 then engine.fm_sine_synth9_freq(value)
-  elseif synth_num == 10 then engine.fm_sine_synth10_freq(value)
-  elseif synth_num == 11 then engine.fm_sine_synth11_freq(value)
-  elseif synth_num == 12 then engine.fm_sine_synth12_freq(value)
-  elseif synth_num == 13 then engine.fm_sine_synth13_freq(value)
-  elseif synth_num == 14 then engine.fm_sine_synth14_freq(value)
-  elseif synth_num == 15 then engine.fm_sine_synth15_freq(value)
-  elseif synth_num == 16 then engine.fm_sine_synth16_freq(value)
+  elseif synth_num == 2 then 
+    engine.fm_sine_synth2_freq(value)
+    current_freq = value
+  elseif synth_num == 3 then 
+    engine.fm_sine_synth3_freq(value)
+    current_freq = value
+  elseif synth_num == 4 then 
+    engine.fm_sine_synth4_freq(value)
+    current_freq = value
+  elseif synth_num == 5 then 
+    engine.fm_sine_synth5_freq(value)
+    current_freq = value
+  elseif synth_num == 6 then 
+    engine.fm_sine_synth6_freq(value)
+    current_freq = value
+  elseif synth_num == 7 then 
+    engine.fm_sine_synth7_freq(value)
+    current_freq = value
+  elseif synth_num == 8 then 
+    engine.fm_sine_synth8_freq(value)
+    current_freq = value
+  elseif synth_num == 9 then 
+    engine.fm_sine_synth9_freq(value)
+    current_freq = value
+  elseif synth_num == 10 then 
+    engine.fm_sine_synth10_freq(value)
+    current_freq = value
+  elseif synth_num == 11 then 
+    engine.fm_sine_synth11_freq(value)
+    current_freq = value
+  elseif synth_num == 12 then 
+    engine.fm_sine_synth12_freq(value)
+    current_freq = value
+  elseif synth_num == 13 then 
+    engine.fm_sine_synth13_freq(value)
+    current_freq = value
+  elseif synth_num == 14 then 
+    engine.fm_sine_synth14_freq(value)
+    current_freq = value
+  elseif synth_num == 15 then 
+    engine.fm_sine_synth15_freq(value)
+    current_freq = value
+  elseif synth_num == 16 then 
+    engine.fm_sine_synth16_freq(value)
+    current_freq = value
   end
 end
 
@@ -181,7 +245,10 @@ m.event = function(data)
     set_amp_from_cc(d.cc, cc_val)
     --edit is the current slider
     edit = map_cc_to_slider(d.cc)
-    --clamp cc_val value to set GUI slider
+    --also set current_freq and current_index to be displayed
+    current_freq = notes[edit+1]
+    current_index = index_sliders[edit+1]
+    --clamp cc_val value to set gui slider
     sliders[edit+1] = util.clamp(d.val, 0.0, 32.0)
     if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
     if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
@@ -192,7 +259,7 @@ end
 function keys_down()
   if key_2_pressed == 1 and key_3_pressed == 1 then
     print ("key 2 and 3 were pressed together...")
-    --use this to read freq from norns input
+    --use this to read freq from norns input...?
   end
 end
 
@@ -207,12 +274,27 @@ function enc(n, delta)
       --edit is the slider number
       edit = accum
     elseif key_2_pressed == 1 and key_3_pressed == 0 then
-      -- set the index_slider value
-      index_sliders[edit+1] = index_sliders[edit+1] + delta
-      if index_sliders[edit+1] > 500 then index_sliders[edit+1] = 500 end
-      if index_sliders[edit+1] < 0 then index_sliders[edit+1] = 0 end
-      print ("delta for index is " .. index_sliders[edit+1] .. " while key2 held" .. edit+1)
-      set_fm_index(edit+1, index_sliders[edit+1])
+      -- set the freq_slider value
+      freq_sliders[edit+1] = freq_sliders[edit+1] + delta
+      if freq_sliders[edit+1] > 2 then freq_sliders[edit+1] = 2 end
+      if freq_sliders[edit+1] < -2 then freq_sliders[edit+1] = -2 end
+      --set octave based on freq_slider
+      if freq_sliders[edit+1] == -2 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/4)
+        current_freq = notes[edit+1]/4
+      elseif freq_sliders[edit+1] == -1 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/2)
+        current_freq = notes[edit+1]/2
+      elseif freq_sliders[edit+1] == 0 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]))
+        current_freq = notes[edit+1]
+      elseif freq_sliders[edit+1] == 1 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])*2)
+        current_freq = notes[edit+1]*2
+      elseif freq_sliders[edit+1] == 2 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])*4)
+        current_freq = notes[edit+1]*4
+      end
     end
   elseif n == 3 then
     if key_3_pressed == 0 and key_2_pressed == 0 then
@@ -222,24 +304,15 @@ function enc(n, delta)
       set_amp(edit+1, amp_value)
       if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
       if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
-    elseif key_3_pressed == 1 and key_2_pressed == 0 then
-      -- set the freq_slider value
-      freq_sliders[edit+1] = freq_sliders[edit+1] + delta
-      if freq_sliders[edit+1] > 2 then freq_sliders[edit+1] = 2 end
-      if freq_sliders[edit+1] < -2 then freq_sliders[edit+1] = -2 end
-      --set octave for slider
-      if freq_sliders[edit+1] == -2 then
-        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/4)
-      elseif freq_sliders[edit+1] == -1 then
-        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/2)
-      elseif freq_sliders[edit+1] == 0 then
-        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/1)
-      elseif freq_sliders[edit+1] == 1 then
-        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])/2)
-      elseif freq_sliders[edit+1] == 2 then
-        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1])*4)
-      end
-      print ("delta " .. delta .. "  while key3 held freq value is " .. freq_sliders[edit+1] .. ". slider being edited is " .. edit)
+    elseif key_2_pressed == 1 and key_3_pressed == 0 then
+      -- set the index_slider value
+      index_sliders[edit+1] = index_sliders[edit+1] + delta
+      if index_sliders[edit+1] > 500 then index_sliders[edit+1] = 500 end
+      if index_sliders[edit+1] < 0 then index_sliders[edit+1] = 0 end
+      --print ("index is " .. index_sliders[edit+1] .. " while key2 held, slider " .. edit+1)
+      set_fm_index(edit+1, index_sliders[edit+1])
+      current_index = index_sliders[edit+1]
+      --print ("delta " .. delta .. "  while key3 held freq value is " .. freq_sliders[edit+1] .. ". slider being edited is " .. edit+1)
     end
   end
   redraw()
@@ -280,6 +353,8 @@ function redraw()
   screen.level(10)
   screen.line(32+step*4, 54)
   screen.stroke()
-
+  --display current values
+  screen.move(32,56)
+  screen.text(MusicUtil.note_num_to_name((MusicUtil.freq_to_note_num(current_freq)),true) .. ", " .. "FM ind: " .. current_index)
   screen.update()
 end
