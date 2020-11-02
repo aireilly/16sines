@@ -9,6 +9,7 @@
 local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+local octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
 local current_index = 3
 local current_octave = "0"
 local edit = 1
@@ -69,6 +70,8 @@ function build_scale()
   --set notes
   for i = 1,16 do
     set_freq(i, MusicUtil.note_num_to_freq(notes[i]))
+    octave_values[i] = "0" 
+    current_octave = "0"
   end  
 end
 
@@ -216,6 +219,7 @@ m.event = function(data)
     --edit is the current slider
     edit = map_cc_to_slider(d.cc)
     current_index = index_values[edit+1]
+    current_octave = octave_values[edit+1]
     --clamp cc_val value to set gui slider
     sliders[edit+1] = util.clamp(d.val, 0.0, 32.0)
     if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
@@ -241,8 +245,9 @@ function enc(n, delta)
       accum = (accum + delta) % 16
       --edit is the slider number
       edit = accum
-      --set current_index to be displayed
+      --set current_index and current_octave to be displayed
       current_index = index_values[edit+1]
+      current_octave = octave_values[edit+1]
     elseif key_2_pressed == 1 and key_3_pressed == 0 then
       -- set the freq_slider value
       freq_values[edit+1] = freq_values[edit+1] + delta
@@ -251,12 +256,15 @@ function enc(n, delta)
       --set octave based on freq_slider
       if freq_values[edit+1] == -1 then
         set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]/2))
+        octave_values[edit+1] = "-1" 
         current_octave = "-1"
       elseif freq_values[edit+1] == 0 then
         set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]))
+        octave_values[edit+1] = "0"
         current_octave = "0"
       elseif freq_values[edit+1] == 1 then
         set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]*2))
+        octave_values[edit+1] = "+1"
         current_octave = "+1"
       end
     end
