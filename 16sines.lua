@@ -251,11 +251,15 @@ function enc(n, delta)
     elseif key_2_pressed == 1 and key_3_pressed == 0 then
       -- set the freq_slider value
       freq_values[edit+1] = freq_values[edit+1] + delta
-      if freq_values[edit+1] > 1 then freq_values[edit+1] = 1 end
-      if freq_values[edit+1] < -1 then freq_values[edit+1] = -1 end
+      if freq_values[edit+1] > 2 then freq_values[edit+1] = 2 end
+      if freq_values[edit+1] < -2 then freq_values[edit+1] = -2 end
       --set octave based on freq_slider
-      if freq_values[edit+1] == -1 then
-        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]/2))
+      if freq_values[edit+1] == -2 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]-24))
+        octave_values[edit+1] = "-2" 
+        current_octave = "-2"
+      elseif freq_values[edit+1] == -1 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]-12))
         octave_values[edit+1] = "-1" 
         current_octave = "-1"
       elseif freq_values[edit+1] == 0 then
@@ -263,9 +267,13 @@ function enc(n, delta)
         octave_values[edit+1] = "0"
         current_octave = "0"
       elseif freq_values[edit+1] == 1 then
-        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]*2))
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]+12))
         octave_values[edit+1] = "+1"
         current_octave = "+1"
+      elseif freq_values[edit+1] == 2 then
+        set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]+24))
+        octave_values[edit+1] = "+2"
+        current_octave = "+2"
       end
     end
   elseif n == 3 then
