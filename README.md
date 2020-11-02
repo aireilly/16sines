@@ -4,7 +4,7 @@ A simple FM sine synth with 16 independant harmonically related sine waves, opti
 
 ## Installation
 
-Install: 
+To install, ssh into norns:  
 
 	$ cd dust/code
 	$ git clone https://github.com/aidanreilly/16sines.git
