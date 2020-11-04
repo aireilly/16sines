@@ -1,6 +1,6 @@
 # 16sines
 
-A simple FM sine synth with 16 independant but harmonically related sine waves, optionally controlled by 16n. Each sine wave is FM modulated with configurable carrier - modulator FM index per sine wave.
+A simple FM sine synth with 16 independant but harmonically related sine waves, optionally controlled by 16n. Each sine wave is FM modulated with configurable carrier - modulator FM index.
 
 ## Installation
 
