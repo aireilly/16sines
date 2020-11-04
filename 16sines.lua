@@ -1,4 +1,4 @@
---- ~ 16Sines v0.1 ~
+--- ~ 16Sines v0.1 by @oootini ~
 -- [E1] overall volume
 -- [E2] select sine wave 1-16
 -- [E3] select sine wave amplitude
