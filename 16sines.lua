@@ -11,6 +11,7 @@ local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
 local octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
 local current_index = 3
+local current_note = 0
 local current_octave = "0"
 local edit = 1
 local accum = 1
@@ -220,6 +221,7 @@ m.event = function(data)
     edit = map_cc_to_slider(d.cc)
     current_index = index_values[edit+1]
     current_octave = octave_values[edit+1]
+    current_note = notes[edit+1]
     --clamp cc_val value to set gui slider
     sliders[edit+1] = util.clamp(d.val, 0.0, 32.0)
     if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
@@ -230,8 +232,20 @@ end
 
 function keys_down()
   if key_2_pressed == 1 and key_3_pressed == 1 then
-    print ("key 2 and 3 were pressed together...")
-    --use this to read freq from norns input...?
+    print ("Reset everything to default...")
+    --set notes
+    for i = 1,16 do
+      set_freq(i, MusicUtil.note_num_to_freq(notes[i]))
+      set_amp(i, 0)
+      set_fm_index(i, 3)
+      sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+      freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+      index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+      octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
+      current_index = 3
+      current_note = 0
+      current_octave = "0"
+    end
   end
 end
 
@@ -248,6 +262,7 @@ function enc(n, delta)
       --set current_index and current_octave to be displayed
       current_index = index_values[edit+1]
       current_octave = octave_values[edit+1]
+      current_note = notes[edit+1]
     elseif key_2_pressed == 1 and key_3_pressed == 0 then
       -- set the freq_slider value
       freq_values[edit+1] = freq_values[edit+1] + delta
@@ -334,7 +349,16 @@ function redraw()
   screen.line(32+step*4, 54)
   screen.stroke()
   --display current values
-  screen.move(32,56)
-  screen.text("Oct: " .. current_octave .. " FM Ind: " .. current_index)
+  screen.move(0,5)
+  screen.level(16)
+  screen.text(MusicUtil.note_num_to_name(current_note,true))
+  screen.level(2)
+  screen.text(" Oct: ")
+  screen.level(16)
+  screen.text(current_octave)
+  screen.level(2)
+  screen.text(" FM Ind: ")
+  screen.level(16)
+  screen.text(current_index)
   screen.update()
 end
