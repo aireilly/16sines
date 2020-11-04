@@ -262,8 +262,9 @@ function enc(n, delta)
       end
     elseif key_2_pressed == 0 and key_3_pressed == 1 then
       -- increment the note value with delta 
-      notes[edit+1] = notes[edit+1] + delta
+      notes[edit+1] = notes[edit+1] + util.clamp(delta, -1, 1)
       current_note = notes[edit+1]
+      set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]))
     end
   elseif n == 3 then
     if key_3_pressed == 0 and key_2_pressed == 0 then
@@ -278,10 +279,8 @@ function enc(n, delta)
       index_values[edit+1] = index_values[edit+1] + delta
       if index_values[edit+1] > 500 then index_values[edit+1] = 500 end
       if index_values[edit+1] < 0 then index_values[edit+1] = 0 end
-      --print ("index is " .. index_values[edit+1] .. " while key2 held, slider " .. edit+1)
       set_fm_index(edit+1, index_values[edit+1])
       current_index = index_values[edit+1]
-      --print ("delta " .. delta .. "  while key3 held freq value is " .. freq_values[edit+1] .. ". slider being edited is " .. edit+1)
     end
   end
   redraw()
