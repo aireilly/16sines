@@ -1,11 +1,11 @@
 --- ~ 16Sines v0.1 ~
--- 16 harmonically related sines
 -- [E1] overall volume
 -- [E2] select sine wave 1-16
 -- [E3] select sine wave amplitude
 -- [K1] exit to norns main menu
 -- [K2] + [E2] change octave
 -- [K2] + [E3] change FM index
+-- [K3] + [E2] change note
 
 local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -260,6 +260,10 @@ function enc(n, delta)
         octave_values[edit+1] = "+2"
         current_octave = "+2"
       end
+    elseif key_2_pressed == 0 and key_3_pressed == 1 then
+      -- increment the note value with delta 
+      notes[edit+1] = notes[edit+1] + delta
+      current_note = notes[edit+1]
     end
   elseif n == 3 then
     if key_3_pressed == 0 and key_2_pressed == 0 then

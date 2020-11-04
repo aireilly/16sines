@@ -21,6 +21,7 @@ Select a root note and scale from the norns parameters menu. 16 frequencies base
 * [Key 1] exit to norns main menu
 * [Key 2] + [Enc 2] change sine wave octave
 * [Key 2] + [Enc 3] change FM index
+* [Key 3] + [Enc 2] change note
 
 ### Optional
 
