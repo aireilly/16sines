@@ -1,15 +1,16 @@
 --- ~ 16Sines v0.1 ~
--- @oootini October 2020
 -- 16 harmonically related sines
--- enc 2 = select step
--- enc 3 = tune step
--- key 2 = grab pitch
--- key 3 = mutate
+-- [E1] overall volume
+-- [E2] select sine wave 1-16
+-- [E3] select sine wave amplitude
+-- [K1] exit to norns main menu
+-- [K2] + [E2] change octave
+-- [K2] + [E3] change FM index
 
-local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-local index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
-local octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
+local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+local index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+local octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
 local current_index = 3
 local current_note = 0
 local current_octave = "0"
@@ -78,74 +79,43 @@ end
 
 function set_fm_index(synth_num, value)
   --set index between 0-24 for pleasant sounds
-  if synth_num == 1 then 
-    engine.fm_sine_synth1_index(value)
-  elseif synth_num == 2 then
-    engine.fm_sine_synth2_index(value)
-  elseif synth_num == 3 then 
-    engine.fm_sine_synth3_index(value)
-  elseif synth_num == 4 then 
-    engine.fm_sine_synth4_index(value)
-  elseif synth_num == 5 then 
-    engine.fm_sine_synth5_index(value)
-  elseif synth_num == 6 then 
-    engine.fm_sine_synth6_index(value)
-  elseif synth_num == 7 then 
-    engine.fm_sine_synth7_index(value)
-  elseif synth_num == 8 then 
-    engine.fm_sine_synth8_index(value)
-  elseif synth_num == 9 then 
-    engine.fm_sine_synth9_index(value)
-  elseif synth_num == 10 then 
-    engine.fm_sine_synth10_index(value)
-  elseif synth_num == 11 then 
-    engine.fm_sine_synth11_index(value)
-  elseif synth_num == 12 then 
-    engine.fm_sine_synth12_index(value)
-  elseif synth_num == 13 then 
-    engine.fm_sine_synth13_index(value)
-  elseif synth_num == 14 then 
-    engine.fm_sine_synth14_index(value)
-  elseif synth_num == 15 then 
-    engine.fm_sine_synth15_index(value)
-  elseif synth_num == 16 then 
-    engine.fm_sine_synth16_index(value)
+  if synth_num == 1 then engine.fm_sine_synth1_index(value)
+  elseif synth_num == 2 then engine.fm_sine_synth2_index(value)
+  elseif synth_num == 3 then engine.fm_sine_synth3_index(value)
+  elseif synth_num == 4 then engine.fm_sine_synth4_index(value)
+  elseif synth_num == 5 then engine.fm_sine_synth5_index(value)
+  elseif synth_num == 6 then engine.fm_sine_synth6_index(value)
+  elseif synth_num == 7 then engine.fm_sine_synth7_index(value)
+  elseif synth_num == 8 then engine.fm_sine_synth8_index(value)
+  elseif synth_num == 9 then engine.fm_sine_synth9_index(value)
+  elseif synth_num == 10 then engine.fm_sine_synth10_index(value)
+  elseif synth_num == 11 then engine.fm_sine_synth11_index(value)
+  elseif synth_num == 12 then engine.fm_sine_synth12_index(value)
+  elseif synth_num == 13 then engine.fm_sine_synth13_index(value)
+  elseif synth_num == 14 then engine.fm_sine_synth14_index(value)
+  elseif synth_num == 15 then engine.fm_sine_synth15_index(value)
+  elseif synth_num == 16 then engine.fm_sine_synth16_index(value)
   end
 end
 
 function set_freq(synth_num, value)
   --set freq
   if synth_num == 1 then engine.fm_sine_synth1_freq(value)
-  elseif synth_num == 2 then 
-    engine.fm_sine_synth2_freq(value)
-  elseif synth_num == 3 then 
-    engine.fm_sine_synth3_freq(value)
-  elseif synth_num == 4 then 
-    engine.fm_sine_synth4_freq(value)
-  elseif synth_num == 5 then 
-    engine.fm_sine_synth5_freq(value)
-  elseif synth_num == 6 then 
-    engine.fm_sine_synth6_freq(value)
-  elseif synth_num == 7 then 
-    engine.fm_sine_synth7_freq(value)
-  elseif synth_num == 8 then 
-    engine.fm_sine_synth8_freq(value)
-  elseif synth_num == 9 then 
-    engine.fm_sine_synth9_freq(value)
-  elseif synth_num == 10 then 
-    engine.fm_sine_synth10_freq(value)
-  elseif synth_num == 11 then 
-    engine.fm_sine_synth11_freq(value)
-  elseif synth_num == 12 then 
-    engine.fm_sine_synth12_freq(value)
-  elseif synth_num == 13 then 
-    engine.fm_sine_synth13_freq(value)
-  elseif synth_num == 14 then 
-    engine.fm_sine_synth14_freq(value)
-  elseif synth_num == 15 then 
-    engine.fm_sine_synth15_freq(value)
-  elseif synth_num == 16 then 
-    engine.fm_sine_synth16_freq(value)
+  elseif synth_num == 2 then engine.fm_sine_synth2_freq(value)
+  elseif synth_num == 3 then engine.fm_sine_synth3_freq(value)
+  elseif synth_num == 4 then engine.fm_sine_synth4_freq(value)
+  elseif synth_num == 5 then engine.fm_sine_synth5_freq(value)
+  elseif synth_num == 6 then engine.fm_sine_synth6_freq(value)
+  elseif synth_num == 7 then engine.fm_sine_synth7_freq(value)
+  elseif synth_num == 8 then engine.fm_sine_synth8_freq(value)
+  elseif synth_num == 9 then engine.fm_sine_synth9_freq(value)
+  elseif synth_num == 10 then engine.fm_sine_synth10_freq(value)
+  elseif synth_num == 11 then engine.fm_sine_synth11_freq(value)
+  elseif synth_num == 12 then engine.fm_sine_synth12_freq(value)
+  elseif synth_num == 13 then engine.fm_sine_synth13_freq(value)
+  elseif synth_num == 14 then engine.fm_sine_synth14_freq(value)
+  elseif synth_num == 15 then engine.fm_sine_synth15_freq(value)
+  elseif synth_num == 16 then engine.fm_sine_synth16_freq(value)
   end
 end
 
