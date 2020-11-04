@@ -1,7 +1,7 @@
 --- ~ 16Sines v0.1 by @oootini ~
 -- [E1] overall volume
--- [E2] select sine wave 1-16
--- [E3] select sine wave amplitude
+-- [E2] select sine 1-16
+-- [E3] select sine amplitude
 -- [K1] exit to norns main menu
 -- [K2] + [E2] change octave
 -- [K2] + [E3] change FM index
