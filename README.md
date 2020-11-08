@@ -15,13 +15,17 @@ Then, `SYSTEM => RESET` to pick up the new SuperCollider engine.
 
 Select a root note and scale from the norns parameters menu. 16 frequencies based on the selected scale are applied to the sc engine.  
 
-* [Enc 1] controls overall volume
-* [Enc 2] select sine wave 1-16
-* [Enc 3] control selected sine wave amplitude
-* [Key 1] exit to norns main menu
-* [Key 2] + [Enc 2] change sine wave octave
-* [Key 2] + [Enc 3] change FM index
-* [Key 3] + [Enc 2] change note
+Controls:
+
+* [E1] overall volume
+* [E2] select sine 1-16
+* [E3] set sine amplitude
+* [K1] exit to norns main menu
+* [K2] + [E2] change note
+* [K2] + [E3] detune
+* [K3] + [E2] change octave
+* [K3] + [E3] change FM index
+* [K2] + [K3] reset to scale
 
 ### Optional
 

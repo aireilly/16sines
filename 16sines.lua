@@ -1,14 +1,17 @@
 --- ~ 16Sines v0.1 by @oootini ~
 -- [E1] overall volume
 -- [E2] select sine 1-16
--- [E3] select sine amplitude
+-- [E3] set sine amplitude
 -- [K1] exit to norns main menu
--- [K2] + [E2] change octave
--- [K2] + [E3] change FM index
--- [K3] + [E2] change note
+-- [K2] + [E2] change note
+-- [K2] + [E3] detune
+-- [K3] + [E2] change octave
+-- [K3] + [E3] change FM index
+-- [K2] + [K3] reset to scale
 
 local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+local cents_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
 local octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
 local current_index = 3
@@ -19,6 +22,9 @@ local accum = 1
 local cc_index = 3
 local cc_accum = 1
 local step = 0
+local freq_increment = 0
+local current_freq = 0
+local current_cents = 0
 local scale_names = {}
 local notes = {}
 local key_2_pressed = 0
@@ -208,12 +214,14 @@ function keys_down()
       set_freq(i, MusicUtil.note_num_to_freq(notes[i]))
       set_amp(i, 0)
       set_fm_index(i, 3)
-      sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-      freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-      index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
-      octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
+      sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+      freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+      cents_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+      index_values = {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}
+      octave_values = {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}
       current_index = 3
       current_note = 0
+      current_cents = 0
       current_octave = "0"
     end
   end
@@ -233,7 +241,8 @@ function enc(n, delta)
       current_index = index_values[edit+1]
       current_octave = octave_values[edit+1]
       current_note = notes[edit+1]
-    elseif key_2_pressed == 1 and key_3_pressed == 0 then
+      current_cents = cents_values[edit+1]
+    elseif key_2_pressed == 0 and key_3_pressed == 1 then
       -- set the freq_slider value
       freq_values[edit+1] = freq_values[edit+1] + delta
       if freq_values[edit+1] > 2 then freq_values[edit+1] = 2 end
@@ -260,7 +269,7 @@ function enc(n, delta)
         octave_values[edit+1] = "+2"
         current_octave = "+2"
       end
-    elseif key_2_pressed == 0 and key_3_pressed == 1 then
+    elseif key_2_pressed == 1 and key_3_pressed == 0 then
       -- increment the note value with delta 
       notes[edit+1] = notes[edit+1] + util.clamp(delta, -1, 1)
       current_note = notes[edit+1]
@@ -275,6 +284,19 @@ function enc(n, delta)
       if sliders[edit+1] > 32 then sliders[edit+1] = 32 end
       if sliders[edit+1] < 0 then sliders[edit+1] = 0 end
     elseif key_2_pressed == 1 and key_3_pressed == 0 then
+      -- increment the current note freq
+      freq_increment = freq_increment + util.clamp(delta, -1, 1) * 0.1
+      -- calculate increase in cents 
+      -- https://music.stackexchange.com/questions/17566/how-to-calculate-the-difference-in-cents-between-a-note-and-an-arbitrary-frequen
+      local cents_increment = 3986*math.log((MusicUtil.note_num_to_freq(notes[edit+1]) + freq_increment)/(MusicUtil.note_num_to_freq(notes[edit+1]))) 
+      -- round down to 2 dec points
+      cents_increment = math.floor((cents_increment) * 10 / 10)
+      cents_values[edit+1] = cents_increment
+      current_cents = cents_increment
+      current_note = notes[edit+1]
+      current_freq = (MusicUtil.note_num_to_freq(notes[edit+1]) + freq_increment)
+      set_freq(edit+1, MusicUtil.note_num_to_freq(notes[edit+1]) + freq_increment)
+    elseif key_2_pressed == 0 and key_3_pressed == 1 then
       -- set the index_slider value
       index_values[edit+1] = index_values[edit+1] + delta
       if index_values[edit+1] > 500 then index_values[edit+1] = 500 end
@@ -323,14 +345,21 @@ function redraw()
   screen.stroke()
   --display current values
   screen.move(0,5)
-  screen.level(16)
-  screen.text(MusicUtil.note_num_to_name(current_note,true))
   screen.level(2)
-  screen.text(" Oct: ")
+  screen.text("Note: ")  
+  screen.level(16)
+  screen.text(MusicUtil.note_num_to_name(current_note,true) .. " ")
+  screen.level(2)
+  screen.text("Detune: ")
+  screen.level(16)
+  screen.text(current_cents .. " cents")
+  screen.move(0,12)
+  screen.level(2)
+  screen.text("Octave: ")
   screen.level(16)
   screen.text(current_octave)
   screen.level(2)
-  screen.text(" FM Ind: ")
+  screen.text(" FM Index: ")
   screen.level(16)
   screen.text(current_index)
   screen.update()
