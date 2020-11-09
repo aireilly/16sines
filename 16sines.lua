@@ -7,7 +7,7 @@
 -- K2 + E3 - detune
 -- K3 + E2 - change octave
 -- K3 + E3 -  change FM index
--- K2 + K3 - reset to scale
+-- K2 + K3 - set unison with root 
 
 local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
