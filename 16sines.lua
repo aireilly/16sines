@@ -1,13 +1,13 @@
 --- ~ 16Sines v0.1 by @oootini ~
--- [E1] overall volume
--- [E2] select sine 1-16
--- [E3] set sine amplitude
--- [K1] exit to norns main menu
--- [K2] + [E2] change note
--- [K2] + [E3] detune
--- [K3] + [E2] change octave
--- [K3] + [E3] change FM index
--- [K2] + [K3] reset to scale
+-- E1 - overall volume
+-- E2 - select sine 1-16
+-- E3 - set sine amplitude
+-- K1 - exit to norns main menu
+-- K2 + E2 - change note
+-- K2 + E3 - detune
+-- K3 + E2 - change octave
+-- K3 + E3 -  change FM index
+-- K2 + K3 - reset to scale
 
 local sliders = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 local freq_values = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -26,6 +26,7 @@ local freq_increment = 0
 local current_freq = 0
 local current_cents = 0
 local scale_names = {}
+local unison_opts = {"yes", "no"}
 local notes = {}
 local key_2_pressed = 0
 local key_3_pressed = 0
@@ -59,7 +60,6 @@ function add_params()
   for i = 1, #MusicUtil.SCALES do
     table.insert(scale_names, string.lower(MusicUtil.SCALES[i].name))
   end
-  
   params:add{type = "option", id = "scale_mode", name = "scale mode",
     options = scale_names, default = 5,
     action = function() build_scale() end}
@@ -206,6 +206,8 @@ m.event = function(data)
   redraw()
 end
 
+
+--not used, but could be swapped out with set_unison()
 function keys_down()
   if key_2_pressed == 1 and key_3_pressed == 1 then
     print ("Reset everything to default...")
@@ -223,6 +225,30 @@ function keys_down()
       current_note = 0
       current_cents = 0
       current_octave = "0"
+    end
+  end
+end
+
+function set_unison()
+  if key_2_pressed == 1 and key_3_pressed == 1 then
+    local root = params:get("root_note")
+    print ("Setting unison with root note...")
+    --set notes
+    for i = 1,16 do
+      notes[i] = root
+      sliders[i] = 0
+      freq_values[i] = MusicUtil.note_num_to_freq(notes[i])
+      --set random index and detune values
+      index_values[i] = math.floor((util.clamp(math.random(), 0, 3)) * 10)
+      cents_values[i] = math.floor((util.clamp(math.random(), 0, 20) * 100) * 10 / 10)
+      current_index = index_values[i]
+      octave_values[i] = "0"
+      current_note = notes[i]
+      current_cents = cents_values[i]
+      current_octave = "0"
+      set_freq(i, freq_values[i])
+      set_amp(i, 0)
+      set_fm_index(i, index_values[i])
     end
   end
 end
@@ -306,7 +332,8 @@ function enc(n, delta)
     end
   end
   redraw()
-  keys_down()
+  --keys_down()
+  set_unison()
 end
 
 function key(n, z)
@@ -321,7 +348,8 @@ function key(n, z)
     key_3_pressed = 0
   end
   redraw()
-  keys_down()
+  --keys_down()
+  set_unison()
 end
 
 function redraw()
