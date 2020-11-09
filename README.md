@@ -24,8 +24,8 @@ Controls:
 * [K2] + [E2] change note
 * [K2] + [E3] detune
 * [K3] + [E2] change octave
-* [K3] + [E3] change FM index
-* [K2] + [K3] reset to scale
+* [K3] + [E3] change fm index
+* [K2] + [K3] set all sine waves to the root note, with randomized fm index and detune parameters. 
 
 ### Optional
 
