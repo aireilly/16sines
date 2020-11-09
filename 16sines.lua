@@ -77,7 +77,11 @@ function build_scale()
   end
   --set notes
   for i = 1,16 do
+    index_values[i] = 3
+    cents_values[i] = 0
     set_freq(i, MusicUtil.note_num_to_freq(notes[i]))
+    set_amp(i, 0)
+    set_fm_index(i, index_values[i])
     octave_values[i] = "0" 
     current_octave = "0"
   end  
